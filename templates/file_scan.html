@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% block title %}
+
+Scan File
+
+{% endblock %}
+
+
+
+{% block content %}
+
+{% if msg==1 %}
+
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Success!</strong> File Upload Successfully. Come Back later, while we process the File
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    {% elif msg==0 %}
+
+       <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Failed!</strong> File Upload failed
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+  {% elif msg==3 %}
+
+       <div class="alert alert-info alert-dismissible fade show" role="alert">
+            <strong>Processing!</strong> Please wait while the file is Processing
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+    {% endif %}
+
+
+  <div class="container mt-3">
+        <h2>Upload File</h2>
+        <form  method="POST" enctype="multipart/form-data">
+            
+            <div class="input-group">
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" name="customFile" id="customFile">
+                    <label class="custom-file-label" for="customFile">Choose file</label>
+                </div>
+            </div>
+            <br/>
+            <button type="submit" class="btn btn-success form-control">Submit</button>
+        </form>
+
+
+        {% if uploaded_file_url %}
+        <p>File uploaded at: <a href="{{ uploaded_file_url }}">{{ uploaded_file_url }}</a></p>
+        {% endif %}
+    </div>
+
+    <div class="container">
+
+      <div class="row">
+        
+        <div class="col-md-12">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <div class="page-heading"> <i class="glyphicon glyphicon-edit"></i> <h2> Scanned Files </h2></div>
+            </div> 
+            <div class="panel-body">
+              <table id="file_table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+              </table>
+
+            </div>
+          </div>
+        </div>
+      
+      </div>
+
+    </div>
+	
+    
+<script>
+			$(".custom-file-input").on("change", function() {
+				var fileName = $(this).val().split("\\").pop();
+				$(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+			});
+		</script>
+
+{% endblock %}

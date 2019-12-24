@@ -1,0 +1,222 @@
+{% extends 'base.html' %}
+
+{% block title %}
+
+Report
+
+{% endblock %}
+
+
+
+
+
+{% block content %}
+
+
+<style>
+
+
+/*
+*
+* ==========================================
+* CUSTOM UTIL CLASSES
+* ==========================================
+*
+*/
+
+.progress {
+  width: 150px;
+  height: 150px;
+  background: none;
+  position: relative;
+}
+
+.progress::after {
+  content: "";
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 6px solid #eee;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.progress>span {
+  width: 50%;
+  height: 100%;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  z-index: 1;
+}
+
+.progress .progress-left {
+  left: 0;
+}
+
+.progress .progress-bar {
+  width: 100%;
+  height: 100%;
+  background: none;
+  border-width: 6px;
+  border-style: solid;
+  position: absolute;
+  top: 0;
+}
+
+.progress .progress-left .progress-bar {
+  left: 100%;
+  border-top-right-radius: 80px;
+  border-bottom-right-radius: 80px;
+  border-left: 0;
+  -webkit-transform-origin: center left;
+  transform-origin: center left;
+}
+
+.progress .progress-right {
+  right: 0;
+}
+
+.progress .progress-right .progress-bar {
+  left: -100%;
+  border-top-left-radius: 80px;
+  border-bottom-left-radius: 80px;
+  border-right: 0;
+  -webkit-transform-origin: center right;
+  transform-origin: center right;
+}
+
+.progress .progress-value {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+
+.rounded-lg {
+  border-radius: 1rem;
+}
+
+.text-gray {
+  color: #aaa;
+}
+
+div.h4 {
+  line-height: 1rem;
+}
+
+
+</style>
+
+<script>
+$(function() {
+
+  $(".progress").each(function() {
+
+    var value = $(this).attr('data-value');
+    var left = $(this).find('.progress-left .progress-bar');
+    var right = $(this).find('.progress-right .progress-bar');
+
+    if (value > 0) {
+      if (value <= 50) {
+        right.css('transform', 'rotate(' + percentageToDegrees(value) + 'deg)')
+      } else {
+        right.css('transform', 'rotate(180deg)')
+        left.css('transform', 'rotate(' + percentageToDegrees(value - 50) + 'deg)')
+      }
+    }
+
+  })
+
+  function percentageToDegrees(percentage) {
+
+    return percentage / 100 * 360
+
+  }
+
+});
+
+</script>
+
+
+
+
+  <div class="container">
+
+    <div class="col-xl-12 col-lg-12 mb-4 mt-3">
+      <div class="bg-white rounded-lg p-5 shadow">
+        <h2 class="h6 font-weight-bold text-center mb-4">Result</h2>
+
+        <!-- Progress bar 2 -->
+        <div class="progress mx-auto" data-value='{{ precent }}'>
+          <span class="progress-left">
+                        <span class="progress-bar border-danger"></span>
+          </span>
+          <span class="progress-right">
+                        <span class="progress-bar border-danger"></span>
+          </span>
+          <div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
+            <div class="h2 font-weight-bold">{{ detected }}/{{ total }}</div>
+          </div>
+        </div>
+        <!-- END -->
+
+        <!-- Demo info-->
+        <div class="row text-center mt-4">
+          <div class="col-6 border-right">
+            <div class="h4 font-weight-bold mb-0">{{ precent }}%</div><span class="small text-gray">Detected</span>
+          </div>
+          <div class="col-6">
+            <div class="h4 font-weight-bold mb-0">{{ 100 - precent }}%</div><span class="small text-gray">Not Detected</span>
+          </div>
+        </div>
+        <!-- END -->
+      </div>
+    </div>
+  </div>
+
+
+    <div class="container">
+
+      <div class="row">
+        
+        <div class="col-md-12">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <div class="page-heading"> <i class="glyphicon glyphicon-edit"></i> <h2> Report</h2></div>
+            </div> 
+            <div class="panel-body">
+              <table id="file_report_table">
+                <thead>
+                  <tr>
+                    <th>Anti-Virus Engine</th>
+                    <th>Result</th>
+                  </tr>
+                </thead>
+              </table>
+
+            </div>
+          </div>
+        </div>
+      
+      </div>
+
+    </div>
+	
+    
+
+  <script>
+  var data = JSON.parse('{{ data | tojson}}');
+			$('#file_report_table').DataTable({
+			
+				"data" : data,
+				"columns": [
+				{ "data": "Anti-Virus Engine" },
+				{"data": "result"}
+			]
+			
+			});
+  </script>
+
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}
+
+Home
+
+{% endblock %}
+
+{% block content %}
+
+
+
+
+
+<div class="container mt-3">
+    <div class="jumbotron text-center">
+        <h2 class="display-4">Welcome to Virus Total</h2>
+        <p class="lead">Analyze suspicious files and URLs to detect types of malware, automatically share them with the security community</p>
+    </div>      
+</div>
+
+<div class="container mt-3">
+        <div class="row vertical">
+            <div class="col text-center">
+                <a href="/file/scan" class="btn btn-primary">
+                    <i class="fa fa-file-archive-o"></i> Upload a File
+                </a>
+            </div>
+            
+        </div>
+    </div>
+  <div class="container mt-3">
+        <div class="row vertical">
+            <div class="col text-center">
+                <a href="/url/scan" class="btn btn-primary">
+                    <i class="fa fa-link"></i> Upload a URL
+                </a>
+            </div>
+            
+        </div>
+    </div>
+{% endblock %}
