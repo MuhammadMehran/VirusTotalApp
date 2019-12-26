@@ -10,33 +10,157 @@ Home
 
 
 
+<style>
+
+/***
+Bootstrap4 Card with Tabs by @mdeuerlein
+***/
+
+body {
+    background-color: #f7f8f9;
+}
+
+.card {
+    background-color: #ffffff;
+    border: 1px solid rgba(0, 34, 51, 0.1);
+    box-shadow: 2px 4px 10px 0 rgba(0, 34, 51, 0.05), 2px 4px 10px 0 rgba(0, 34, 51, 0.05);
+    border-radius: 0.15rem;
+}
+
+/* Tabs Card */
+
+.tab-card {
+  border:1px solid #eee;
+}
+
+.tab-card-header {
+  background:none;
+}
+/* Default mode */
+.tab-card-header > .nav-tabs {
+  border: none;
+  margin: 0px;
+}
+.tab-card-header > .nav-tabs > li {
+  margin-right: 2px;
+}
+.tab-card-header > .nav-tabs > li > a {
+  border: 0;
+  border-bottom:2px solid transparent;
+  margin-right: 0;
+  color: #737373;
+  padding: 2px 15px;
+}
+
+.tab-card-header > .nav-tabs > li > a.show {
+    border-bottom:2px solid #007bff;
+    color: #007bff;
+}
+.tab-card-header > .nav-tabs > li > a:hover {
+    color: #007bff;
+}
+
+.tab-card-header > .tab-content {
+  padding-bottom: 0;
+}
 
 
-<div class="container mt-3">
-    <div class="jumbotron text-center">
-        <h2 class="display-4">Welcome to Virus Total</h2>
+</style>
+
+
+
+<div class="container mt-3" style="background-color: #ffffff;">
+<div class="row vertical justify-content-center">
+<div class="col-md-6">
+<div class="text-center"  >
+        <h3 class="display-3 text-primary">Virus Total</h2>
         <p class="lead">Analyze suspicious files and URLs to detect types of malware, automatically share them with the security community</p>
-    </div>      
+    </div>
+</div> 
+</div>      
 </div>
 
-<div class="container mt-3">
-        <div class="row vertical">
-            <div class="col text-center">
-                <a href="/file/scan" class="btn btn-primary">
-                    <i class="fa fa-file-archive-o"></i> Upload a File
-                </a>
-            </div>
-            
-        </div>
+    <div class="container mt-3 text-center">
+        <div class="row vertical justify-content-center">
+            <div class="col-md-6">
+            <div class="card mt-3 tab-card">
+                <div class="card-header tab-card-header">
+                <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link" id="one-tab" data-toggle="tab" href="#one" role="tab" aria-controls="One" aria-selected="true">Scan File</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="two-tab" data-toggle="tab" href="#two" role="tab" aria-controls="Two" aria-selected="false">Upload URL</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="three-tab" data-toggle="tab" href="#three" role="tab" aria-controls="Three" aria-selected="false">Search</a>
+                    </li>
+                </ul>
+                </div>
+
+                <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active p-3" id="one" role="tabpanel" aria-labelledby="one-tab">
+                    <h5 class="card-title">Upload File</h5>
+                    <form action="/file/scan" id="fileform" method="POST" enctype="multipart/form-data">
+                        <img height="70" src="https://www.virustotal.com/gui/images/thumbprint.png">
+                        <div class="input-group">
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" name="customFile" id="customFile">
+                                <label class="custom-file-label" for="customFile">Choose file</label>
+                            </div>
+                        </div>
+                        <br/>
+                        
+                    </form>           
+                </div>
+                <div class="tab-pane fade p-3" id="two" role="tabpanel" aria-labelledby="two-tab">
+                    <h5 class="card-title">Upload URL</h5>
+                    <form action="/url/scan" method="POST">
+                        <img height="70" src="https://www.virustotal.com/gui/images/website-scan.svg">
+                        <div class="input-group">
+                            <input class="form-control" type="url" id="url" name="url" autocomplete="off"  placeholder="Enter URL">
+                            <span class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="submit">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </span>
+                        </div>
+                        <br/>
+                        
+                    </form>
+                                
+                </div>
+                <div class="tab-pane fade p-3" id="three" role="tabpanel" aria-labelledby="three-tab">
+                    <h5 class="card-title">Search By Hash</h5>
+                    <img height="70" src="https://www.virustotal.com/gui/images/VT_search_hash.svg">    
+                    <form id="searchform">
+                    <div class="input-group">
+                        <input class="form-control" type="search" id="search_hash" placeholder="Enter hash">
+                        <span class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="submit">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </span>
+                    </div>
+                    </form>        
+                </div>
+
+                </div>
+      </div>
     </div>
-  <div class="container mt-3">
-        <div class="row vertical">
-            <div class="col text-center">
-                <a href="/url/scan" class="btn btn-primary">
-                    <i class="fa fa-link"></i> Upload a URL
-                </a>
-            </div>
-            
-        </div>
+  </div>
     </div>
+
+<script>
+			$(".custom-file-input").on("change", function() {
+				var fileName = $(this).val().split("\\").pop();
+				$(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+                $('#fileform').submit();
+			});
+            $("#searchform").submit(function(e){
+                e.preventDefault();
+                window.location.href = window.location.origin+"/url/report/"+$('#search_hash').val();
+            });
+		</script>
+
 {% endblock %}

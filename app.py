@@ -10,7 +10,10 @@ from db import init_db_command
 from file_model import FileModel
 from url_model import UrlModel
 
+
+
 app = Flask(__name__)
+
 
 
 app.config['FILE_FOLDER'] = 'files'
@@ -23,7 +26,8 @@ try:
 except sqlite3.OperationalError:
     pass
 
-
+if not os.path.exists('files'):
+    os.makedirs('files')
 
 
 # Home Route It will display index.html in browser
